@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>How Deadly are U.S. School Shootings?</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap" rel="stylesheet">
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://unpkg.com/intersection-observer"></script>
+	<script src="https://unpkg.com/scrollama"></script>
+</head>
+<style type="text/css">
+	body, html {
+		top:0;
+		left:0;
+		margin:0;
+		font-family:'Source Sans Pro', sans-serif;
+	}
+	nav	{
+		background-color:white;
+		position:fixed;
+		width:100%;
+		display:flex;
+		justify-content: center;
+		align-items:center;
+/*		border-bottom:0.05em solid black;*/
+		z-index:100;
+	}
+	.title {
+		height:50vh;
+		color:white;
+		background-color:#003f5c;
+/*		background-image:('');*/
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-position: left top;
+		background-size: auto 100%;
+	}
+	.title h1 {
+		font-size:4.25em;
+	}
+	.title h2 {
+		font-size:1em;
+		font-weight:400;
+	}
+	.header {
+		text-align:center;
+		display:flex;
+		justify-content:center;
+		align-items:center;
+/*		border:0.5em solid black;*/
+		padding:5% 0%;
+		animation: fadeIn 0.5s ease-in-out;
+	}
+	.header h1{
+		font-family:'Source Sans Pro', sans-serif;
+		font-weight:800;
+		margin:0;
+	}
+	.header h2 {
+		margin:0;
+	}
+	.sticky {
+		float:right;
+		top:25%;
+		position:sticky;
+		width:50%;
+		display:inline-flex;
+		background-color:white;
+	}
+	.leftside{
+		background-color: #003f5c;
+		color:white;
+		width: 30%;
+    	padding: 5% 10% 5% 5%;
+	}
+	.progressive{
+		width:100%;
+		display:block;
+		margin-bottom:100%!important;
+	}
+	.end {
+		margin-bottom:5%!important;
+	}
+	#counter {
+		width:100%;
+		font-size:10em;
+		text-align:center;
+		margin:0;
+		padding:0%;
+		line-height:1em;
+		font-weight: 800;
+    	letter-spacing: -0.05em;
+	}
+	#counter h2{
+		text-align:center;
+	}
+	.text {
+		margin:5%;
+		line-height:2em;
+		opacity:0;
+		margin-top:10%;
+		transition:0.5s ease-in-out;
+	}
+	.text h1 {
+		font-size:4em;
+		letter-spacing:-0.05em;
+		line-height:1em;
+		font-weight:900;
+		width:60%;
+	}
+	.text h2 {
+		font-weight:400;
+		font-size:1em;
+		font-style:italic;
+	}
+	.int {
+		font-size:2em;
+		letter-spacing:-0.05em;
+		line-height:1em;
+		font-weight:600;
+	}
+	.sticky h1 {
+		width:100%;
+		font-size:3em;
+	}
+	.sticky h2 {
+		font-size:0.8em;
+		text-transform:uppercase;
+		letter-spacing:0.1em;
+	}
+	.center_aligner {
+		overflow:none;
+		width:100%;
+		display:flex;
+		align-items:center;
+		justify-content:center;
+		margin:2% 0%;
+	}
+/*	iframe {
+		border:0.5em solid black;
+		width:1200px;
+		height: 1500px;
+	}*/
+	.tableauPlaceholder{
+		width:900px;
+		z-index:0;
+	}
+	img{
+		text-align:center;
+		margin:0%;
+		display:inline-block;
+/*		border:0.5em solid black;*/
+	}
+	.caption {
+		font-size:0.8em;
+		color:#666666;
+	}
+	.small {
+		width:60%;
+	}
+	.large {
+		width:80%;
+		display:block;
+	}
+	.large2 {
+		width:90%;
+		display:block;
+	}
+	@keyframes fadeIn {
+		0%{
+			opacity:0;
+		}
+		100%{
+			opacity:1;
+		}
+	}
+	@media screen and (max-width:767px){
+		.sticky {
+	/*		bottom:0;*/
+			width:50%;
+			float:none;
+			margin:auto;
+			display:flex;
+			line-height:2em;
+		}
+		.sticky h1 {
+			font-size:2em;
+			line-height:2em;
+		}
+		.sticky h2 {
+			font-size:0.5em;
+		}
+		#counter {
+			font-size:5em;
+		}
+		.leftside {
+			width: 85%;
+    		padding: 5% 10% 5% 5%;
+		}
+		.small {
+			width:80%;
+		}
+		.title {
+			height:80vh;
+		}
+		.text h1 {
+			font-size:2.5em;
+			width:80%;
+		}
+		.text {
+			margin:10% 5%;
+		}
+		iframe {
+			height:900px;
+		}
+
+	}
+</style>
+<body>
+
+<!-- nav -->
+<nav>
+	<h3>How Deadly are U.S. School Shootings?</h3>
+</nav>
+
+<!-- text -->
+<div class='header title step'>
+	<div class='aligner'>
+		<h1>How Deadly are U.S. School Shootings?</h1>
+		<h2>A BRIEF LOOK INTO THE IMPACT OF U.S. SCHOOL SHOOTINGS FROM 1990-2020</h2>
+	</div>
+</div>
+
+
+<div class='text'>
+	<h2>By Tatiana Kalainoff</h2>
+	<h1> 
+		In early 2021, Representative Marjorie Taylor Greene, member of the House of Education Committee, agreed with claims on social media that the Parkland High School mass shooting was a "false flag" planned event.
+	</h1>
+</div>
+
+<div class='text'>
+	The United States has a deep and heart-breaking history of gun violence as a country and in the more recent years the news has covered several significant shootings that have all taken place on school grounds.
+	Now amidst a global pandemic school shootings are down, but gun violence is at the forefront of the news cycle, with the Atlanta hate crime shooting and the Boulder grocery store shooting.
+	This is a data exploration of school shootings from 1990-2020 to uncover trends of the past 3 decades and to note where we currently are given that most children haven't been to school in over a year.
+</div>
+
+<div class='text'>
+	<h1>Before we get into the numbers, let's take a look at geography...</h1>
+	School shootings touch nearly every state and every corner of our country. In the data set used for this analysis the only state that did not have any school shootings recorded is North Dakota.
+	There was not enough data to ethicallly investigate and compare different locales like urban, suburban or rural, but it is safe to say that no matter who we are or where we live we want our schools to be places of safety.
+	Throughout this essay we will be often be comparing and contrasting number of shootings, number of fatalities and number of injuries. These maps give us a better sense of how these numbers spread out across the states and regions.
+</div>
+
+
+<!-- tableau public -->
+<div class='center_aligner'>
+	<!-- insert tableau public embed link below this line -->
+	<div class='tableauPlaceholder' id='viz1616206043295' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;U_&#47;U_S_SchoolShootingsDataforVisualEssay&#47;ContextMapsofUSSchoolShootingsfrom1990-2020&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='U_S_SchoolShootingsDataforVisualEssay&#47;ContextMapsofUSSchoolShootingsfrom1990-2020' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;U_&#47;U_S_SchoolShootingsDataforVisualEssay&#47;ContextMapsofUSSchoolShootingsfrom1990-2020&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1616206043295');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1016px';vizElement.style.height='1014px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+</div>
+
+<br>
+<br>
+<br>
+
+<div class='text'>
+	<h1>Measuring the impact of school shootings over the last 30 years</h1>
+	When we talk about total impact, we are specifically looking at the sum of both fatalies and injuries. At times, we will look at one or the other, but to really get a full understanding we will need to look at fatalities and injuries together.
+	Below are graphs that explores the factors by year over the last 3 decades. The most apparent trend we can gleam from this is that 2020 had some of the lowest impact we have seen in a long time, clearly from the pandemic forcing schools nationwide to switch to completely remote learning.
+	We can also see that for the most part the trends for number of shootings and number of fatalities are very similar and that the number of injuries followed those trends but remained lower from 1990-2010 and then jumps in the last decade to meet the other two. 
+</div>
+
+
+<!-- image 3 -->
+<div class='center_aligner'>
+	<!-- change line 120 if you want to change the size of the image -->
+	<img class='large' src="images/It 1/School Shootings_Design Graphs-02.png">
+</div>
+<!-- caption for image 3 -->
+<div class='center_aligner'>
+	<div class='caption'>Understanding fatalities and injuries in realtion to number of shootings</div>
+</div>
+
+<br>
+<br>
+<br>
+
+<!-- tableau public -->
+<div class='center_aligner'>
+	<!-- insert tableau public embed link below this line -->
+	<div class='tableauPlaceholder' id='viz1616206248268' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;U_&#47;U_S_SchoolShootingsDataforVisualEssay&#47;MeasuringSchoolShootingImpactOverTime&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='U_S_SchoolShootingsDataforVisualEssay&#47;MeasuringSchoolShootingImpactOverTime' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;U_&#47;U_S_SchoolShootingsDataforVisualEssay&#47;MeasuringSchoolShootingImpactOverTime&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1616206248268');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1016px';vizElement.style.height='1014px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+</div>
+
+<br>
+<br>
+<br>
+
+<div class='text'>
+	<h1>Taking a deeper look into impact by month ...</h1>
+</div>
+
+
+<!-- image 5 -->
+<div class='center_aligner'>
+	<!-- change line 120 if you want to change the size of the image -->
+	<img class='large2' src="images/heatmap_cropped.gif">
+</div>
+<!-- caption for image 5 -->
+<div class='center_aligner'>
+	<div class='caption'>Heatmap overlaying fatalities and injuries by month - explore more in depth below!</div>
+</div>
+
+<!-- interactive embed, adjust the width and height as necessary, copy lines 155 to 157 to create a new interactive embed -->
+<div class='center_aligner'>
+	<iframe src="int_heatmap_fatalities_vs_injuries2.html" frameBorder=0 scrolling=no width="1200px" height="375px"></iframe>
+</div>
+
+<br>
+<br>
+<br>
+
+<div class='text'>
+	<h1>... and state</h1>
+</div>
+
+<!--image 6 -->
+<div class='center_aligner'>
+	<!-- change line 120 if you want to change the size of the image -->
+	<img class='large2' src="Custom Data Graphic_Radial Bar Charts.jpg">
+</div> 
+<!--caption for image 6 -->
+<div class='center_aligner'>
+	<div class='caption'>Radial bar charts comparing number of shootings to total impact, fatalities and injuries</div>
+</div>
+
+<!-- interactive embed, adjust the width and height as necessary, copy lines 155 to 157 to create a new interactive embed -->
+<div class='center_aligner'>
+	<iframe src="int_radialchart_fatalities_vs_injuries.html" frameBorder=0 scrolling=no width="1200px" height="1500px"></iframe>
+</div>
+
+
+<!-- tableau public -->
+<div class='center_aligner'>
+	<!-- insert tableau public embed link below this line -->
+	<div class='tableauPlaceholder' id='viz1616206418269' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;U_&#47;U_S_SchoolShootingsDataforVisualEssay&#47;RelationshipbetweenImpactandNo_ofShootingsbyState&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='U_S_SchoolShootingsDataforVisualEssay&#47;RelationshipbetweenImpactandNo_ofShootingsbyState' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;U_&#47;U_S_SchoolShootingsDataforVisualEssay&#47;RelationshipbetweenImpactandNo_ofShootingsbyState&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1616206418269');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1016px';vizElement.style.height='1014px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+</div>
+
+<br>
+<br>
+<br>
+
+<!-- counter -->
+<div class='header sticky step' id='dynamic_sticky1'>
+</div>
+
+
+<div class='leftside'>
+
+	<div class='text progressive'>
+	<h1>Top 5 Deadliest Shootings</h1>
+	Viriginia Tech (Blacksburg, VA)<br>
+	Sandyhook Elementary (Newtown, CT)<br>
+	Marjory Stoneman Douglas High School (Parkland, FL)<br>
+	Columbine High School (Littleton, CO)<br>
+	Red Lake Senior High School (Red Lake, MN)
+	</div>
+
+	<div class='text progressive'>
+	<h1>Top 5 Deadliest States</h1>
+	California, Texas, Florida, Virginia and Pennsylvania
+	</div>
+
+	<div class='text progressive end'>
+	<h1>Deadliest Year</h1>
+	Highest number of fatalities in a given year since 1990
+	</div>
+
+</div>
+
+
+<div class='text'>
+	<h1>Takeaways</h1>
+	School shootings have a devastating impact on our society and country. Rather than try and create solutions for the problem like bullet-proof backpacks, active-shooter lockdown drills etc. we should advocate for more effective gun control policy to get at the root of the issue.
+	I will be continuing to research this topic and expand this exploration to include data on impact of specific school type, greater state breakdown, inclusion of gun policy data and shooter demographic data.
+</div>
+
+
+</body>
+<script type="text/javascript">
+
+// instantiate the scrollama
+const scroller = scrollama();
+const scroller2 = scrollama();
+
+scroller
+  .setup({
+    step: ".text",
+    offset: 0.9,
+  })
+  .onStepEnter(response => {
+    // { element, index, direction }
+    el=response.element;
+    el.style.opacity=1;
+    el.style.marginTop='5%';
+  })
+  .onStepExit(response => {
+    // { element, index, direction }
+    el=response.element;
+  })
+  ;
+ // setup resize event
+window.addEventListener("resize", scroller.resize);
+
+scroller2
+  .setup({
+    step: ".progressive",
+    offset: 0.6,
+  })
+  .onStepEnter(response => {
+    // { element, index, direction }
+    el=response.element;
+    el.style.opacity=1;
+    if(response.index==0 || 1 || 2){
+    	stick('dynamic_sticky1')
+    	response.direction=='down'
+    	if(response.index==0){
+    		count(1,33,1,'Most Fatalities','Virginia Tech Shooting, 2007','dynamic_sticky1')
+    	} else if (response.index==1){
+    		count(1,76,1,'Most Fatalities','The state of California','dynamic_sticky1')
+    	} else if (response.index==2){
+    		count(0,82,1,'Most Fatalities','Year 2012','dynamic_sticky1')
+    	}
+    }
+  })
+  .onStepExit(response => {
+    // { element, index, direction }
+    el=response.element;
+    console.log(response.index)
+    if(response.index==2){
+    	unstick('dynamic_sticky1')
+    }
+    el.style.opacity=0;
+  })
+  ;
+ // setup resize event
+window.addEventListener("resize", scroller2.resize);
+
+function count(number1, number2, step, title, label, location_id, prefix='', suffix=''){
+	target = document.querySelector('#'+location_id)
+	console.log(target)
+	let text=number1;
+
+	setInterval(function(){
+		if(text!=number2){
+			num = text+step
+			if(num % 1 == 0){
+				text = num
+			} else {
+				text = parseFloat(num.toFixed(2))
+			}
+			target.innerHTML="<div class='aligner'><h1>"+title+"</h1><div id='counter'>"+prefix+text+suffix+"</div><h2>"+label+"</h2></div>"
+		}
+	}, 30);
+}
+
+function stick(location_id){
+	target = document.querySelector('#'+location_id)
+	target.style.position="sticky"
+}
+
+function unstick(location_id){
+	target = document.querySelector('#'+location_id)
+	target.style.position="relative"
+}
+
+</script>
+
+</html>
