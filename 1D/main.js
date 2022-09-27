@@ -168,7 +168,7 @@ function displayData(allPlaces){
         .selectAll("circle")
         .data(allPlaces)
         .join("circle")
-        .attr("r", 6)
+        .attr("r", 3)
         .attr("cx", function(d){ return xScale(d.year) })
         .attr("cy", function(d){ return yScale(d.mmr) })
         .attr("transform", "translate(50,50)")
