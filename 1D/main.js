@@ -117,7 +117,8 @@ function displayData(allPlaces){
     
     g.append("g")
     .attr("class", "axis")
-    .attr("transform", "translate(30," + margin.left + ")")
+    // .attr("transform", "translate(30," + margin.left + ")")
+    .attr("transform", `translate(30,${height - margin.bottom})`)
     .call(d3.axisBottom(xScale))
     .append("text")
     .attr("x", (width)/2) //middle of the xAxis
@@ -130,7 +131,8 @@ function displayData(allPlaces){
     g.append("g")
     .attr("class", "axis")
     .call(d3.axisLeft(yScale).ticks(10))
-    .attr("transform", "translate(" + margin.left + ",0)")
+    // .attr("transform", "translate(" + margin.left + ",0)")
+    .attr('transform', `translate(${margin.left},0)`)
     .append("text")
     .attr("transform", "rotate(-90)")
     .attr("x", -(height/2)) //middle of the xAxis
